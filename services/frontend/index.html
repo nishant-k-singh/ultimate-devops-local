@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps E-Commerce</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .section {
+            margin-top: 30px;
+        }
+
+        .product,
+        .order {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        button {
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        #message {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>DevOps E-Commerce</h1>
+    <p>Local Microservices Demo</p>
+
+    <div class="section">
+        <h2>Products</h2>
+        <div id="products">
+            Loading products...
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Create Order</h2>
+
+        <label>
+            Product ID:
+            <input type="number" id="productId" value="1" min="1">
+        </label>
+
+        <br><br>
+
+        <label>
+            Quantity:
+            <input type="number" id="quantity" value="1" min="1">
+        </label>
+
+        <br><br>
+
+        <button onclick="createOrder()">Place Order</button>
+
+        <div id="message"></div>
+    </div>
+
+    <div class="section">
+        <h2>Orders</h2>
+        <div id="orders">
+            Loading orders...
+        </div>
+    </div>
+
+    <script>
+        const PRODUCT_SERVICE = "";
+        const ORDER_SERVICE = "";
+
+        async function loadProducts() {
+            try {
+                const response = await fetch(
+                    `/products`
+                );
+
+                const products = await response.json();
+
+                const container = document.getElementById("products");
+
+                container.innerHTML = "";
+
+                products.forEach(product => {
+                    container.innerHTML += `
+                        <div class="product">
+                            <strong>${product.name}</strong>
+                            <br>
+                            Price: ₹${product.price}
+                            <br>
+                            Product ID: ${product.id}
+                        </div>
+                    `;
+                });
+
+            } catch (error) {
+                document.getElementById("products").innerHTML =
+                    "Unable to load products.";
+            }
+        }
+
+
+        async function loadOrders() {
+            try {
+                const response = await fetch(
+                    `/orders`
+                );
+
+                const orders = await response.json();
+
+                const container = document.getElementById("orders");
+
+                container.innerHTML = "";
+
+                orders.forEach(order => {
+                    container.innerHTML += `
+                        <div class="order">
+                            Order ID: ${order.id}
+                            <br>
+                            Product ID: ${order.product_id}
+                            <br>
+                            Quantity: ${order.quantity}
+                            <br>
+                            Status: ${order.status}
+                        </div>
+                    `;
+                });
+
+            } catch (error) {
+                document.getElementById("orders").innerHTML =
+                    "Unable to load orders.";
+            }
+        }
+
+
+        async function createOrder() {
+            const productId =
+                document.getElementById("productId").value;
+
+            const quantity =
+                document.getElementById("quantity").value;
+
+            try {
+                const response = await fetch(
+                    `/orders`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            product_id: Number(productId),
+                            quantity: Number(quantity)
+                        })
+                    }
+                );
+
+                const order = await response.json();
+
+                document.getElementById("message").innerText =
+                    `Order #${order.id} created successfully.`;
+
+                loadOrders();
+
+            } catch (error) {
+                document.getElementById("message").innerText =
+                    "Unable to create order.";
+            }
+        }
+
+
+        loadProducts();
+        loadOrders();
+    </script>
+
+</body>
+</html>

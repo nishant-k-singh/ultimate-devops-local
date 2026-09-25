@@ -1,0 +1,8 @@
+apiVersion: v2
+name: ecommerce
+description: Local e-commerce microservices application deployed with Helm
+
+type: application
+
+version: 0.1.0
+appVersion: "1.1"

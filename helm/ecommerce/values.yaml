@@ -1,0 +1,33 @@
+frontend:
+  replicaCount: 1
+  image:
+    repository: testdocker0334/frontend
+    tag: "1.1"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 80
+
+productService:
+  replicaCount: 1
+  image:
+    repository: testdocker0334/product-service
+    tag: "1.1"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 5000
+
+orderService:
+  replicaCount: 1
+  image:
+    repository: testdocker0334/order-service
+    tag: "1.1"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 5001
+
+ingress:
+  enabled: true
+  className: nginx
