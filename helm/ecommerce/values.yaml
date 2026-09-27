@@ -2,7 +2,7 @@ frontend:
   replicaCount: 1
   image:
     repository: testdocker0334/frontend
-    tag: "276be76"
+    tag: "00ae776"
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
@@ -12,7 +12,7 @@ productService:
   replicaCount: 1
   image:
     repository: testdocker0334/product-service
-    tag: "276be76"
+    tag: "00ae776"
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
@@ -22,7 +22,7 @@ orderService:
   replicaCount: 1
   image:
     repository: testdocker0334/order-service
-    tag: "276be76"
+    tag: "00ae776"
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
