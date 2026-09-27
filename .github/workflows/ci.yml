@@ -25,21 +25,23 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Set image tag
+        run: echo "IMAGE_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
       - name: Build frontend image
-        run: docker build -t testdocker0334/frontend:ci ./services/frontend
+        run: docker build -t testdocker0334/frontend:${IMAGE_TAG} ./services/frontend
 
       - name: Build product-service image
-        run: docker build -t testdocker0334/product-service:ci ./services/product-service
+        run: docker build -t testdocker0334/product-service:${IMAGE_TAG} ./services/product-service
 
       - name: Build order-service image
-        run: docker build -t testdocker0334/order-service:ci ./services/order-service
+        run: docker build -t testdocker0334/order-service:${IMAGE_TAG} ./services/order-service
 
       - name: Push frontend image
-        run: docker push testdocker0334/frontend:ci
+        run: docker push testdocker0334/frontend:${IMAGE_TAG}
 
       - name: Push product-service image
-        run: docker push testdocker0334/product-service:ci
+        run: docker push testdocker0334/product-service:${IMAGE_TAG}
 
       - name: Push order-service image
-        run: docker push testdocker0334/order-service:ci
-
+        run: docker push testdocker0334/order-service:${IMAGE_TAG}
